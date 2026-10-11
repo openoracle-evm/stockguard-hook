@@ -1,0 +1,23 @@
+name: test
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  forge:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - uses: foundry-rs/foundry-toolchain@v1
+      # Repos created through the GitHub web UI have no submodules — install the pinned dependencies instead.
+      - name: Install dependencies
+        run: |
+          if [ ! -f lib/forge-std/src/Test.sol ]; then
+            rm -f .gitmodules
+            forge install foundry-rs/forge-std@v1.17.0 uniswap/v4-periphery@9969eec44cfdf07e24b41de47f40276a58401976
+          fi
+      - run: forge build
+      - run: forge test -vv
