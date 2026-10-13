@@ -41,7 +41,7 @@ contract StockGuardHookTest is Test, Deployers {
             maxDeviationClosedBps: 500, // 5%
             maxStaleness: 60
         });
-    }
+    
 
     function setUp() public {
         vm.warp(1_760_000_000);
